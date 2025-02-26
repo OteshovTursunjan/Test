@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Dapper" Version="2.1.28" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="MediatR" Version="12.4.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Feature\ExamLog\Command\" />
+    <Folder Include="Feature\ExamLog\Handler\" />
+    <Folder Include="Feature\ExamLog\Queries\" />
+    <Folder Include="Feature\Fail\Command\" />
+    <Folder Include="Feature\Fail\Handler\" />
+    <Folder Include="Feature\Fail\Queries\" />
+    <Folder Include="Feature\Question\Queries\" />
+    <Folder Include="Feature\StudentAnswer\Command\" />
+    <Folder Include="Feature\StudentAnswer\Handler\" />
+    <Folder Include="Feature\StudentAnswer\Queries\" />
+    <Folder Include="Feature\StudentResult\Command\" />
+    <Folder Include="Feature\StudentResult\Handler\" />
+    <Folder Include="Feature\StudentResult\Queries\" />
+    <Folder Include="Feature\Subject\Command\" />
+    <Folder Include="Feature\Subject\Handler\" />
+    <Folder Include="Feature\Subject\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Test.DataAccess\Test.DataAccess\Test.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
