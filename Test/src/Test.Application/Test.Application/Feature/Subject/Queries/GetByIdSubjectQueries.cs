@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.DataAccess.DTOs.Creation;
 
-namespace Test.Application.Feature.Faculty.Queries;
+namespace Test.Application.Feature.Subject.Queries;
 
-public record GetFacultyByIdQueres(Guid id) : IRequest<FacultyCreationModel>;
+public record GetByIdSubjectQueries(Guid id) : IRequest<SubjectCreationModel>;
 

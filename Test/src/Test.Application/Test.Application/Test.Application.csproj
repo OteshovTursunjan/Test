@@ -33,9 +33,6 @@
     <Folder Include="Feature\StudentResult\Command\" />
     <Folder Include="Feature\StudentResult\Handler\" />
     <Folder Include="Feature\StudentResult\Queries\" />
-    <Folder Include="Feature\Subject\Command\" />
-    <Folder Include="Feature\Subject\Handler\" />
-    <Folder Include="Feature\Subject\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

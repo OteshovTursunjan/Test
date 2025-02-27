@@ -5,6 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Application.Feature.Faculty.Command;
+namespace Test.Application.Feature.Subject.Command;
 
-public record DeleteFacultyCommand(Guid id ): IRequest<bool>;
+public record DeleteSubjectCommand(Guid id) : IRequest<bool>;
