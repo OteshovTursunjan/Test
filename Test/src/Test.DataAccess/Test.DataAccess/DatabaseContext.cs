@@ -13,6 +13,7 @@ using Tests.Core.Coomon;
 using Tests.Core.Enteties;
 using Test.Shared;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Test.DataAccess.DTOs.Register;
 
 namespace Test.DataAccess;
     public  class DatabaseContext : IdentityDbContext<ApplicationUser>
@@ -35,7 +36,7 @@ namespace Test.DataAccess;
     public DbSet<StudentAnswer> studentAnswers { get; set; }
     public DbSet<StudentResult> studentResult { get; set; }
     public DbSet<Subject> subjects { get; set; }
-
+    public DbSet<RefreshToken> refreshTokens { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

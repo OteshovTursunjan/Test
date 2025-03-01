@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Get\" />
     <Folder Include="Persistance\Configuration\" />
   </ItemGroup>
 

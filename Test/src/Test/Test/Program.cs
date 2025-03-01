@@ -1,7 +1,9 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using System.Security.Claims;
+using Test.Application;
 using Test.DataAccess;
 using Tests.Core.Enteties;
 
@@ -21,7 +23,7 @@ namespace Test
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<DatabaseContext>(options =>
               options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionString")));
-
+            builder.Services.AddApplication(builder.Environment);
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();

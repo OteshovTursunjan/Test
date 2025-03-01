@@ -24,7 +24,7 @@ public static class DataAccessDependesInjcetion
         services.AddIdentity();
 
         services.AddRepositories();
-
+       
         return services;
     }
     private static void AddRepositories(this IServiceCollection services)

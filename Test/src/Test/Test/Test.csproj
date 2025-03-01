@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Test.Application\Test.Application\Test.Application.csproj" />
     <ProjectReference Include="..\..\Test.DataAccess\Test.DataAccess\Test.DataAccess.csproj" />
   </ItemGroup>
 
