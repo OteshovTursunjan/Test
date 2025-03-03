@@ -9,8 +9,7 @@ namespace Tests.Core.Enteties
 {
     public class StudentAnswer : BaseEntity, IAuditedEntity
     {
-        public ExamAttempt examAttempts { get; set; }
-        public Guid AtemptId { get; set; }
+      
         public Question Question { get; set; }
         public Guid QuestionID { get; set; }
         public string SelectAnswer { get; set; }

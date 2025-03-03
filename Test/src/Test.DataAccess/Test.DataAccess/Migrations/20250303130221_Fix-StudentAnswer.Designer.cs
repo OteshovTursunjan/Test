@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Test.DataAccess;
@@ -11,9 +12,11 @@ using Test.DataAccess;
 namespace Test.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250303130221_Fix-StudentAnswer")]
+    partial class FixStudentAnswer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -524,9 +527,14 @@ namespace Test.DataAccess.Migrations
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid>("examId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("id");
 
                     b.HasIndex("QuestionID");
+
+                    b.HasIndex("examId");
 
                     b.ToTable("studentAnswers");
                 });
@@ -741,6 +749,14 @@ namespace Test.DataAccess.Migrations
                         .HasForeignKey("QuestionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Tests.Core.Enteties.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("examId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
 
                     b.Navigation("Question");
                 });

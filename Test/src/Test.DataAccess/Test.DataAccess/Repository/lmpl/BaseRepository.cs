@@ -53,7 +53,6 @@ namespace Test.DataAccess.Repository.lmpl
 
             if (entity == null)
                 throw new ResourceNotFound(typeof(TEntity));
-
             return entity;
         }
 

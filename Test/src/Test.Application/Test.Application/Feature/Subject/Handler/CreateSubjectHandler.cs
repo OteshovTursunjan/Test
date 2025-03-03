@@ -19,11 +19,6 @@ public class CreateSubjectHandler : IRequestHandler<CreateSubjectCommand, bool>
 
     public async Task<bool> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
     {
-        var subject = await subjectRepository.GetFirstAsync(u => u.Name == request.SubjectCreationModel.Name);
-        if (subject != null)
-        {
-            return false;
-        }
         var res = new Tests.Core.Enteties.Subject()
         {
             Name = request.SubjectCreationModel.Name,

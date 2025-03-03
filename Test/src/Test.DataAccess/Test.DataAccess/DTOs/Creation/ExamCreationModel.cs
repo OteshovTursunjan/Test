@@ -9,7 +9,7 @@ namespace Test.DataAccess.DTOs.Creation;
 
 public  class ExamCreationModel
 {
-    public Subject Subject { get; set; }
+   // public Subject Subject { get; set; }
     public Guid SubjectId { get; set; }
     public int QuestionCount { get; set; }
 }

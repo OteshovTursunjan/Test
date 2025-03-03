@@ -7,7 +7,7 @@ using Tests.Core.Enteties;
 
 namespace Test.DataAccess.Repository
 {
-    public  interface IFacultyRepository : IBaseRepository<Faculty>
+    public  interface IFacultyRepository : IBaseRepository<Tests.Core.Enteties.Faculty>
     {
     }
 }

@@ -10,6 +10,6 @@ namespace Test.DataAccess.DTOs.Creation;
 public class SubjectCreationModel
 {
     public string Name { get; set; }
-    public Faculty Faculty { get; set; }
+  
     public Guid FacultyID { get; set; }
 }

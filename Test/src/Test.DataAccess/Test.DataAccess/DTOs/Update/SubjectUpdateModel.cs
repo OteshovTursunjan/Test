@@ -11,6 +11,5 @@ public  class SubjectUpdateModel
 {
     public Guid id {  get; set; }
     public string Name { get; set; }
-    public Faculty Faculty { get; set; }
     public Guid FacultyID { get; set; }
 }

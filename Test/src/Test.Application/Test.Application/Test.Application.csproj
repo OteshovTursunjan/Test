@@ -28,7 +28,6 @@
     <Folder Include="Feature\Fail\Handler\" />
     <Folder Include="Feature\Fail\Queries\" />
     <Folder Include="Feature\Question\Queries\" />
-    <Folder Include="Feature\StudentAnswer\Command\" />
     <Folder Include="Feature\StudentAnswer\Handler\" />
     <Folder Include="Feature\StudentAnswer\Queries\" />
     <Folder Include="Feature\StudentResult\Command\" />

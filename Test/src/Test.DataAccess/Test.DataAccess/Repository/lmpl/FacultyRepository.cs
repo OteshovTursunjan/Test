@@ -7,7 +7,7 @@ using Tests.Core.Enteties;
 
 namespace Test.DataAccess.Repository.lmpl
 {
-    public class FacultyRepository : BaseRepository<Faculty>, IFacultyRepository
+    public class FacultyRepository : BaseRepository<Tests.Core.Enteties.Faculty>, IFacultyRepository
     {
         public FacultyRepository(DatabaseContext dbContext) : base(dbContext)
         {
