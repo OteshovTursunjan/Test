@@ -28,8 +28,4 @@
     <ProjectReference Include="..\..\Test.DataAccess\Test.DataAccess\Test.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Filter\" />
-  </ItemGroup>
-
 </Project>

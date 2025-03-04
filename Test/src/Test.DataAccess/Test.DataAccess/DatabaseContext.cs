@@ -25,7 +25,7 @@ namespace Test.DataAccess;
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
     }
-
+    public DbSet<ExamSession> Sessions { get; set; }
     public DbSet<Answer> answers { get; set; }
     public DbSet<Exam> exams        { get; set; }
     public DbSet<ExamAttempt> examAttempts { get; set; }

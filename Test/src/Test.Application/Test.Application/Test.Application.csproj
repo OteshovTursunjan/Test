@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Test.DataAccess\Test.DataAccess\Test.DataAccess.csproj" />
+    <ProjectReference Include="..\..\Tests.Core\Tests.Core\Tests.Core.csproj" />
   </ItemGroup>
 
 </Project>

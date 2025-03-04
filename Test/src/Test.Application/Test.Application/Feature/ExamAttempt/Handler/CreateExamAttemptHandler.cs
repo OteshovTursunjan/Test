@@ -23,7 +23,7 @@ public class CreateExamAttemptHandler : IRequestHandler<CreateExamAttemptCommand
         {
             StudentId = request.ExamAttemptCreationModel.StudentId,
             NumberOfAttempt = request.ExamAttemptCreationModel.NumberOfAttempt,
-            Score  = request.ExamAttemptCreationModel.Score,
+            Score  = 0,
             ExamId = request.ExamAttemptCreationModel.ExamId
         };
 
