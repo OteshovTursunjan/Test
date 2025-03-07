@@ -9,8 +9,9 @@ namespace Tests.Core.Enteties
 {
     public class ExamSession : BaseEntity, IAuditedEntity
     {
-       
+        
         public Exam Exam { get; set; }
+        public Guid ExamID { get; set; }
         public Guid StudentId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }

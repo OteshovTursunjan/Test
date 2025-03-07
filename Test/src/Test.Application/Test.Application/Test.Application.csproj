@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Feature\ExamLog\**" />
+    <Compile Remove="Feature\Fail\**" />
+    <Compile Remove="Feature\StudentResult\**" />
+    <EmbeddedResource Remove="Feature\ExamLog\**" />
+    <EmbeddedResource Remove="Feature\Fail\**" />
+    <EmbeddedResource Remove="Feature\StudentResult\**" />
+    <None Remove="Feature\ExamLog\**" />
+    <None Remove="Feature\Fail\**" />
+    <None Remove="Feature\StudentResult\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Dapper" Version="2.1.28" />
@@ -21,18 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Feature\ExamLog\Command\" />
-    <Folder Include="Feature\ExamLog\Handler\" />
-    <Folder Include="Feature\ExamLog\Queries\" />
-    <Folder Include="Feature\Fail\Command\" />
-    <Folder Include="Feature\Fail\Handler\" />
-    <Folder Include="Feature\Fail\Queries\" />
     <Folder Include="Feature\Question\Queries\" />
     <Folder Include="Feature\StudentAnswer\Handler\" />
     <Folder Include="Feature\StudentAnswer\Queries\" />
-    <Folder Include="Feature\StudentResult\Command\" />
-    <Folder Include="Feature\StudentResult\Handler\" />
-    <Folder Include="Feature\StudentResult\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

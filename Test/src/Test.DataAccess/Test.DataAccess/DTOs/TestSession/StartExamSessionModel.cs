@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.DataAccess.DTOs.TestModel;
+namespace Test.DataAccess.DTOs.TestSession;
 
-public  class StartExamSessionModel
+public class StartExamSessionModel
 {
     public Guid ExamId { get; set; }
     public Guid StudentId { get; set; }
