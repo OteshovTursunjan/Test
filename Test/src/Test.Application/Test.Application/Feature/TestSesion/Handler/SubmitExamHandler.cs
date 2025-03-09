@@ -72,6 +72,7 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
             StudentID = examsession.StudentId,
             ExamId = examsession.ExamID,
             Score = correctAnswer,
+            IsFail = IsFail,
             Percentage = await CalculatePercantage(exam.id,correctAnswer),
         };
         await _studentResultRepository.AddAsync(studentResult);

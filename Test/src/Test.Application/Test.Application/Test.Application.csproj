@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Feature\Question\Queries\" />
     <Folder Include="Feature\StudentAnswer\Handler\" />
     <Folder Include="Feature\StudentAnswer\Queries\" />
   </ItemGroup>

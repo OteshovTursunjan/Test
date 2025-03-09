@@ -15,7 +15,7 @@ namespace Tests.Core.Enteties
         public Guid ExamId { get; set; }
         public int Score { get; set; }
         public double Percentage {  get; set; }
-
+        public bool IsFail {  get; set; }
         public string? CreatBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public string? UpdateBY { get; set; }

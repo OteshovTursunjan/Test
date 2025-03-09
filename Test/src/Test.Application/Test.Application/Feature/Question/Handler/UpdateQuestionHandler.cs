@@ -1,9 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Test.Application.Feature.Question.Command;
 using Test.DataAccess.Repository;
 
@@ -21,22 +17,17 @@ public class UpdateQuestionHandler : IRequestHandler<UpdateQuestionCommand, bool
 
     public async Task<bool> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)
     {
-        var question = new Tests.Core.Enteties.Question()
-        {
-            Text = request.questionCreationModel.Text,
-            ExamId = request.questionCreationModel.ExamId,
-        }; 
-        var answer = new Tests.Core.Enteties.Answer()
-        {
-            QuestionID = question.id,
-            A = request.questionCreationModel.A,
-            B = request.questionCreationModel.B,
-            C = request.questionCreationModel.C,
-            D = request.questionCreationModel.D,
-            RightAnswer = request.questionCreationModel.RightAnswer,
-        };
+        var question = await _questionRepository.GetFirstAsync(u => u.id == request.id);
+        var answer = await _answerRepository.GetFirstAsync(u => u.QuestionID == request.id);
+        question.Text = request.questionCreationModel.Text;
+        question.ExamId = request.questionCreationModel.ExamId;
+        var s2 =  await _questionRepository.UpdateAsync(question);
+        answer.A = request.questionCreationModel.A;
+        answer.B = request.questionCreationModel.B;
+        answer.C = request.questionCreationModel.C;
+        answer.D = request.questionCreationModel.D;
+        answer.RightAnswer = request.questionCreationModel.RightAnswer;
         var s1 =  await _answerRepository.UpdateAsync(answer);
-        var s2 =  await _questionRepository.UpdateAsync(question);   
         if(s1 == null || s2 == null) { return false; }
         return true;
     }
