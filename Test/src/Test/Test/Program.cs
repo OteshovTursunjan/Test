@@ -1,62 +1,86 @@
 
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Security.Claims;
 using Test.Application;
 using Test.DataAccess;
+using Test.Middleware;
 using Tests.Core.Enteties;
+using ExceptionHandlerMiddleware = Test.Middleware.ExceptionHandlerMiddleware;
+using Quartz;
+using Quartz.AspNetCore;
+namespace Test;
 
-namespace Test
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+        builder.Services.AddQuartz(q =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            var jobKey = new JobKey("RabbitMqToPostgresJob");
 
-            // Add services to the container.
+          
+            q.AddJob<RabbitMqToPostgresJob>(opts => opts.WithIdentity(jobKey));
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<DatabaseContext>(options =>
-              options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionString")));
-            builder.Services.AddApplication(builder.Environment);
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<DatabaseContext>()
-                .AddDefaultTokenProviders();
+            q.AddTrigger(opts => opts
+           .ForJob(jobKey)
+           .WithIdentity("RabbitMqToPostgresTrigger")
+           .WithCronSchedule("0 12 23 * * ?"));
+        });
 
-            builder.Services.AddDataAccess(builder.Configuration);
-            builder.Services.AddHttpContextAccessor();
+        builder.Services.AddQuartzHostedService(options =>
+        {
+            options.WaitForJobsToComplete = true;
+        });
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("User", policy =>
-                    policy.RequireClaim(ClaimTypes.Role, "User"));
-                options.AddPolicy("Admin", policy =>
-                    policy.RequireClaim(ClaimTypes.Role, "Admin"));
-            });
-            builder.Services.AddHttpContextAccessor();
+        builder.Services.AddControllers();
+       
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        
+        builder.Services.AddDbContext<DatabaseContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("ConnectionString")));
+       
+        builder.Services.AddApplication(builder.Environment);
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
 
-            var app = builder.Build();
+        builder.Services.AddDataAccess(builder.Configuration);
+        builder.Services.AddHttpContextAccessor();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("User", policy =>
+                policy.RequireClaim(ClaimTypes.Role, "User"));
+            options.AddPolicy("Admin", policy =>
+                policy.RequireClaim(ClaimTypes.Role, "Admin"));
+        });
+        builder.Services.AddHttpContextAccessor();
 
-            app.UseHttpsRedirection();
+        var app = builder.Build();
 
-            app.UseAuthorization();
-
-
-            app.MapControllers();
-
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+        app.UseMiddleware<LoggingMiddleware>();
+       // app.UseMiddleware<ExceptionHandlerMiddleware>();
+        //app.UseMiddleware<PerformanceMiddleware>();
+        //app.UseMiddleware<TransactionMiddleware>();
+        //app.UseMiddleware<UserIdMiddleware>();
+
+        app.MapControllers();
+
+        app.Run();
     }
 }

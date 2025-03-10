@@ -29,7 +29,7 @@ namespace Test.DataAccess;
     public DbSet<Answer> answers { get; set; }
     public DbSet<Exam> exams        { get; set; }
     public DbSet<ExamAttempt> examAttempts { get; set; }
-    public DbSet<ExamLog> examLogs { get; set; }
+    public DbSet<ExamLogs> examLogs { get; set; }
     public DbSet<Faculty> faculties     { get; set; }
     public DbSet<Fail> fails { get; set; }
     public DbSet<Question> questions { get; set; }
@@ -42,6 +42,7 @@ namespace Test.DataAccess;
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         base.OnModelCreating(builder);
+       
     }
     public new async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {

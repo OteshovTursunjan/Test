@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Test.DataAccess;
@@ -11,9 +12,11 @@ using Test.DataAccess;
 namespace Test.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250310162841_ExamLogsFix")]
+    partial class ExamLogsFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -376,24 +379,6 @@ namespace Test.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("examAttempts");
-                });
-
-            modelBuilder.Entity("Tests.Core.Enteties.ExamLogs", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("id");
-
-                    b.ToTable("examLogs");
                 });
 
             modelBuilder.Entity("Tests.Core.Enteties.ExamSession", b =>
