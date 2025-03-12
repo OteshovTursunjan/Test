@@ -26,9 +26,11 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand , bool>
             UserName = request.RegisterUser.Email,
             Email = request.RegisterUser.Email,
             FirstName = request.RegisterUser.FirstName,
-            LastName = request.RegisterUser.LastName
+            LastName = request.RegisterUser.LastName,
+           
+            
         };
-        var result = await _userManager.CreateAsync(newuser);
+        var result = await _userManager.CreateAsync(newuser, request.RegisterUser.Password);
         if (!result.Succeeded)
         {
             return false;

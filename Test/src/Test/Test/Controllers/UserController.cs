@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Test.Application.Feature.User.Command;
+using Test.DataAccess.DTOs.Creation;
 using Test.DataAccess.DTOs.Register;
 
 namespace Test.Controllers
@@ -32,6 +33,24 @@ namespace Test.Controllers
             var res = await mediator.Send(new LoginUserCommand(loginUser));
             return res == null ? NotFound() : Ok(res);
         }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPassowrdDTO forgotPassowrdDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var res = await mediator.Send(new ForgotPassowrdCommand(forgotPassowrdDTO));
+            return res == null ? NotFound() : Ok(res);
+
+        }
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var res = await mediator.Send(new ResetPassowrdCommand(resetPasswordDTO));
+            return res == null ? NotFound() : Ok(res);
+        }
+
 
     }
 }

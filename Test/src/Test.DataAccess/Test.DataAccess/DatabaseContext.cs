@@ -37,6 +37,7 @@ namespace Test.DataAccess;
     public DbSet<StudentResult> studentResult { get; set; }
     public DbSet<Subject> subjects { get; set; }
     public DbSet<RefreshToken> refreshTokens { get; set; }
+    public DbSet<PasswordResetToken> passwordResetTokens { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

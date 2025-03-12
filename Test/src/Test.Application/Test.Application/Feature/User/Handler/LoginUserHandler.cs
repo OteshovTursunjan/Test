@@ -27,8 +27,16 @@ public class LoginUserHandler : IRequestHandler<LoginUserCommand, ReturnRegister
     public async Task<ReturnRegisterModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByEmailAsync(request.LoginUser.Email);
-       // if (user == null || !await _userManager.CheckPasswordAsync(user, request.LoginUser.Password))
-         //   return null;
+        if (user == null)
+        {
+            return null;
+        }
+
+        bool checkPassword = await _userManager.CheckPasswordAsync(user, request.LoginUser.Password);
+        if (!checkPassword)
+        {
+            return null;
+        }
 
         var jwtSecret = _configuration["JwtOptions:SecretKey"] 
             ?? throw new InvalidOperationException("JWT Secret Key is not configured");
