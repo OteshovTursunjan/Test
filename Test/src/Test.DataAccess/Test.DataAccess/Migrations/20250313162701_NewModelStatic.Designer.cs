@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Test.DataAccess;
@@ -11,9 +12,11 @@ using Test.DataAccess;
 namespace Test.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250313162701_NewModelStatic")]
+    partial class NewModelStatic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -558,7 +561,7 @@ namespace Test.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<double>("AmountPercentage")
+                    b.Property<double?>("AmountPercentage")
                         .HasColumnType("double precision");
 
                     b.Property<string>("CreatBy")
@@ -567,7 +570,7 @@ namespace Test.DataAccess.Migrations
                     b.Property<DateTime?>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("NumberOfStudent")
+                    b.Property<int?>("NumberOfStudent")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("SubjectId")

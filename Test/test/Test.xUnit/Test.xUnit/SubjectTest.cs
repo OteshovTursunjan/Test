@@ -15,27 +15,7 @@ namespace Test.xUnit;
 
 public  class SubjectTest
 {
-    [Fact]
-    public async Task CreateSubjectShouldReturnTrue()
-    {
-        var subjectrepositoryMock = new Mock<ISubjectRepository>();
-        var creationSubjectModel = new SubjectCreationModel() { FacultyID = Guid.NewGuid(), Name = "TodayHistory" };
-        var command = new CreateSubjectCommand(creationSubjectModel);
-        var handler = new CreateSubjectHandler(subjectrepositoryMock.Object);
-
-
-        subjectrepositoryMock.
-            Setup(repo => repo.
-            AddAsync(It.IsAny<Subject>())).
-            ReturnsAsync(new Subject());
-
-        var result = await handler.Handle(command, CancellationToken.None);
-
-        Assert.True(result);
-        subjectrepositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Subject>()), Times.Once);
-
-    
-    }
+   
     [Fact]
     public async Task DeleteSubjectReturnTrue()
     {

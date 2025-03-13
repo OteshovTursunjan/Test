@@ -10,18 +10,23 @@ using Test.Application.Feature.User.Command;
 using Test.DataAccess.DTOs.Register;
 using Tests.Core.Enteties;
 using Test.DataAccess;
+using Test.DataAccess.Repository;
 
 public class LoginUserHandler : IRequestHandler<LoginUserCommand, ReturnRegisterModel>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
-    private readonly DatabaseContext _context; // Контекст базы данных
+    private readonly DatabaseContext _context;
+    private readonly IStudentAttemptRepository _studentAttemptRepository;
 
-    public LoginUserHandler(UserManager<ApplicationUser> userManager, IConfiguration configuration, DatabaseContext context)
+    public LoginUserHandler(UserManager<ApplicationUser> userManager,
+        IStudentAttemptRepository studentAttemptRepository,IConfiguration configuration, 
+        DatabaseContext context)
     {
         _userManager = userManager;
         _configuration = configuration;
         _context = context;
+        _studentAttemptRepository = studentAttemptRepository;
     }
 
     public async Task<ReturnRegisterModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -64,15 +69,19 @@ public class LoginUserHandler : IRequestHandler<LoginUserCommand, ReturnRegister
             signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
         );
 
-        // 🔹 Генерация Refresh Token
+       
         var refreshToken = new RefreshToken
         {
-            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)), // Случайный токен
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)), 
             UserId = user.Id,
-            ExpiresAt = DateTime.UtcNow.AddDays(7) // Живёт 7 дней
+            ExpiresAt = DateTime.UtcNow.AddDays(7) 
         };
-
-        // 🔹 Сохраняем Refresh Token в БД
+        var attempt = new StudentAttempt()
+        {
+            StudentID = Guid.Parse(user.Id),
+            Attempts = 3
+        };
+        await _studentAttemptRepository.AddAsync(attempt);
         await _context.AddAsync(refreshToken);
         await _context.SaveChangesAsync();
 
@@ -80,7 +89,7 @@ public class LoginUserHandler : IRequestHandler<LoginUserCommand, ReturnRegister
         {
             Email = request.LoginUser.Email,
             Token = new JwtSecurityTokenHandler().WriteToken(accessToken),
-            RefreshToken = refreshToken.Token, // Отправляем клиенту
+            RefreshToken = refreshToken.Token, 
             DateTime = accessToken.ValidTo,
             LastName = user.LastName,
             FirstName = user.FirstName

@@ -5,6 +5,7 @@ using Test.DataAccess;
 using Test.DataAccess.DTOs.TestSession;
 using Test.DataAccess.Repository;
 using Test.Shared;
+using Tests.Core.Enteties;
 
 
 namespace Test.Application.Feature.TestSesion.Handler;
@@ -14,23 +15,30 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
     private readonly IClaimService _claimService;
     private readonly DatabaseContext context;
     private readonly IStudentResultRepository _studentResultRepository;
-   
+    private readonly IStudentAttemptRepository _studentAttemptRepository;
     private readonly IExamRepository _examRepository;
-    public SubmitExamHandler(DatabaseContext context, IStudentResultRepository studentResultRepository,
-       IExamRepository examRepository,
-       IClaimService claimService)
+    private readonly IStaticRepository _staticRepository;
+    public SubmitExamHandler(DatabaseContext context,  IStudentResultRepository studentResultRepository,
+       IExamRepository examRepository, IStudentAttemptRepository studentAttemptRepository,
+       IClaimService claimService,IStaticRepository staticRepository )
     {
         this.context = context;
         _claimService = claimService;
         _studentResultRepository = studentResultRepository;
-      
+        _studentAttemptRepository = studentAttemptRepository;
         _examRepository = examRepository;
+        _staticRepository = staticRepository;
     }
 
     public async Task<ExamResultModel> Handle(SubmitExamCommand request, CancellationToken cancellationToken)
     {
         var examsession = await context.Sessions
             .FirstOrDefaultAsync(es => es.id == request.ExamSubmissionModel.SessionId, cancellationToken);
+        var studentattempt = await _studentAttemptRepository.GetFirstAsync(u => u.StudentID == examsession.StudentId);
+        if(studentattempt.Attempts == 0)
+        {
+            return null;
+        }
 
         if (examsession == null)
         {
@@ -76,6 +84,13 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
             Percentage = await CalculatePercantage(exam.id,correctAnswer),
         };
         await _studentResultRepository.AddAsync(studentResult);
+        studentattempt.Attempts -= 1;
+        await _studentAttemptRepository.UpdateAsync(studentattempt);
+        await CalculateStatic(studentResult.Percentage, examsession);
+
+
+
+
         return new ExamResultModel
         {
             TotalQuestions = exam.QuestionCount,
@@ -83,6 +98,27 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
             Percentage = await CalculatePercantage(exam.id, correctAnswer),
             IsFail = IsFail
         };
+    }
+    public async Task<bool> CalculateStatic(double percentage, ExamSession examSession)
+    {
+        var exam = await _examRepository.GetFirstAsync(u => u.id == examSession.ExamID);
+        var calculatetable = await _staticRepository.GetFirstAsync(u => u.SubjectId == exam.SubjectId);
+
+        int numberofStudent = calculatetable.NumberOfStudent += 1;
+        double percentages = calculatetable.AmountPercentage += percentage;
+
+
+
+        calculatetable.NumberOfStudent = numberofStudent;
+        calculatetable.AmountPercentage = percentages;
+        await _staticRepository.UpdateAsync(calculatetable);
+
+        var calculatetable2 = await _staticRepository.GetFirstAsync(u => u.SubjectId == exam.SubjectId);
+        double amountper = calculatetable2.AmountPercentage / Convert.ToDouble(calculatetable2.NumberOfStudent);
+        calculatetable2.AmountPercentage = amountper;
+        await _staticRepository.UpdateAsync(calculatetable2);
+        return true;
+
     }
     public async Task<double> CalculatePercantage(Guid id, int correct)
     {

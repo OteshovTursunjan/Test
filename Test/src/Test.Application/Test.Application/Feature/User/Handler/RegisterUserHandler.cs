@@ -30,7 +30,9 @@ public class RegisterUserHandler : IRequestHandler<RegisterUserCommand , bool>
            
             
         };
+       
         var result = await _userManager.CreateAsync(newuser, request.RegisterUser.Password);
+       
         if (!result.Succeeded)
         {
             return false;

@@ -12,9 +12,11 @@ namespace Test.Application.Feature.Subject.Handler;
 public class CreateSubjectHandler : IRequestHandler<CreateSubjectCommand, bool>
 {
     private readonly ISubjectRepository subjectRepository;
-    public CreateSubjectHandler(ISubjectRepository subjectRepository)
+    private readonly IStaticRepository _staticRepository;
+    public CreateSubjectHandler(ISubjectRepository subjectRepository, IStaticRepository staticRepository)
     {
         this.subjectRepository = subjectRepository;
+        _staticRepository = staticRepository;
     }
 
     public async Task<bool> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
@@ -24,7 +26,17 @@ public class CreateSubjectHandler : IRequestHandler<CreateSubjectCommand, bool>
             Name = request.SubjectCreationModel.Name,
             FacultyID = request.SubjectCreationModel.FacultyID,
         };
+        
         await subjectRepository.AddAsync(res);
+        var newSubject = await subjectRepository.GetFirstAsync(u => u.Name == res.Name);
+        var Statics = new Tests.Core.Enteties.Statictis()
+        {
+            SubjectId = newSubject.id,
+            NumberOfStudent = 0,
+            AmountPercentage = 0
+           
+        };
+        await _staticRepository.AddAsync(Statics);
         return true;
     }
 }

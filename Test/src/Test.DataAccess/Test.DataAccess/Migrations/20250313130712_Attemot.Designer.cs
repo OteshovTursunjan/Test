@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Test.DataAccess;
@@ -11,9 +12,11 @@ using Test.DataAccess;
 namespace Test.DataAccess.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250313130712_Attemot")]
+    partial class Attemot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -550,38 +553,6 @@ namespace Test.DataAccess.Migrations
                     b.HasIndex("ExamId");
 
                     b.ToTable("questions");
-                });
-
-            modelBuilder.Entity("Tests.Core.Enteties.Statictis", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<double>("AmountPercentage")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("CreatBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("NumberOfStudent")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("SubjectId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("UpdateBY")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Statics");
                 });
 
             modelBuilder.Entity("Tests.Core.Enteties.StudentAnswer", b =>
