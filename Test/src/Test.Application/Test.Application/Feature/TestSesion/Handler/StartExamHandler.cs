@@ -52,6 +52,7 @@ public class StartExamHandler : IRequestHandler<StartExamCommand, ExamSessionMod
             ExamID = exam.id,
             StudentId = request.StartExamSessionModel.StudentId,
             StartTime = DateTime.UtcNow,
+            EndTime = DateTime.UtcNow.AddMinutes(5), 
             Status = ExamSessionStatus.InProgress
         };
 

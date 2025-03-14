@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Test.Application.Feature.TestSesion.Command;
 using Test.DataAccess;
@@ -18,9 +19,10 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
     private readonly IStudentAttemptRepository _studentAttemptRepository;
     private readonly IExamRepository _examRepository;
     private readonly IStaticRepository _staticRepository;
+    private readonly IExamSessionRepository _examSessionRepository;
     public SubmitExamHandler(DatabaseContext context,  IStudentResultRepository studentResultRepository,
        IExamRepository examRepository, IStudentAttemptRepository studentAttemptRepository,
-       IClaimService claimService,IStaticRepository staticRepository )
+       IClaimService claimService,IStaticRepository staticRepository, IExamSessionRepository examSessionRepository )
     {
         this.context = context;
         _claimService = claimService;
@@ -28,6 +30,7 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
         _studentAttemptRepository = studentAttemptRepository;
         _examRepository = examRepository;
         _staticRepository = staticRepository;
+        _examSessionRepository = examSessionRepository;
     }
 
     public async Task<ExamResultModel> Handle(SubmitExamCommand request, CancellationToken cancellationToken)
@@ -35,15 +38,13 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
         var examsession = await context.Sessions
             .FirstOrDefaultAsync(es => es.id == request.ExamSubmissionModel.SessionId, cancellationToken);
         var studentattempt = await _studentAttemptRepository.GetFirstAsync(u => u.StudentID == examsession.StudentId);
-        if(studentattempt.Attempts == 0)
-        {
-            return null;
-        }
 
-        if (examsession == null)
+        if(studentattempt.Attempts == 0 || examsession == null || examsession.Status == ExamSessionStatus.Completed)
         {
             return null;
         }
+        examsession.Status = ExamSessionStatus.InProgress;
+        await _examSessionRepository.UpdateAsync(examsession);
 
         foreach (var answer in request.ExamSubmissionModel.Answers)
         {
@@ -89,7 +90,9 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
         await CalculateStatic(studentResult.Percentage, examsession);
 
 
-
+        examsession.Status = ExamSessionStatus.Completed;
+        await _examSessionRepository.UpdateAsync(examsession);
+        
 
         return new ExamResultModel
         {
@@ -98,6 +101,7 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
             Percentage = await CalculatePercantage(exam.id, correctAnswer),
             IsFail = IsFail
         };
+        
     }
     public async Task<bool> CalculateStatic(double percentage, ExamSession examSession)
     {

@@ -42,6 +42,7 @@ public static class DataAccessDependesInjcetion
         services.AddScoped<IClaimService, ClaimService>();
         services.AddScoped<IStudentAttemptRepository, StudentAttemptRepository>();
         services.AddScoped<IStaticRepository, StaticRepository>();
+        services.AddScoped<IExamSessionRepository , ExamSessionRepository>();   
     }
     public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {

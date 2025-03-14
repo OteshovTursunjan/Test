@@ -28,7 +28,7 @@ public class Program
             q.AddTrigger(opts => opts
            .ForJob(jobKey)
            .WithIdentity("RabbitMqToPostgresTrigger")
-           .WithCronSchedule("0 12 23 * * ?"));
+           .WithCronSchedule("0 59 19 * * ?"));
         });
 
         builder.Services.AddQuartzHostedService(options =>
