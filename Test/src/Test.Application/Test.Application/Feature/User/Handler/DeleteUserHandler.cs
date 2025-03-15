@@ -20,11 +20,13 @@ public  class DeleteUserHandler : IRequestHandler<DeleteUserCommand, bool>
 
     public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userManager.FindByEmailAsync(request.LoginUser.Email);
+        var user = await _userManager.FindByEmailAsync(request.email);
          if (user == null)
         {
             return false;
         }
+         if(user.Id == "f29da660-2710-4c2c-a55a-05a1052c0cc0")
+            return false;
          await _userManager.DeleteAsync(user);
         return true;
     }

@@ -28,7 +28,7 @@ public class Program
             q.AddTrigger(opts => opts
            .ForJob(jobKey)
            .WithIdentity("RabbitMqToPostgresTrigger")
-           .WithCronSchedule("0 59 19 * * ?"));
+           .WithCronSchedule("0 29 22 * * ?"));
         });
 
         builder.Services.AddQuartzHostedService(options =>
@@ -74,9 +74,9 @@ public class Program
 
         app.UseAuthorization();
         app.UseMiddleware<LoggingMiddleware>();
-       // app.UseMiddleware<ExceptionHandlerMiddleware>();
-        //app.UseMiddleware<PerformanceMiddleware>();
-        //app.UseMiddleware<TransactionMiddleware>();
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
+        app.UseMiddleware<PerformanceMiddleware>();
+        app.UseMiddleware<TransactionMiddleware>();
         //app.UseMiddleware<UserIdMiddleware>();
 
         app.MapControllers();

@@ -10,6 +10,7 @@ namespace Tests.Core.Enum
     {
         Student,
         Teacher,
-        Admin
+        Admin,
+        SuperAdmin
     }
 }

@@ -8,6 +8,6 @@ using Test.DataAccess.DTOs.Register;
 
 namespace Test.Application.Feature.User.Command;
 
-public record DeleteUserCommand(LoginUser LoginUser ): IRequest<bool>
+public record DeleteUserCommand(String  email ): IRequest<bool>
 {
 }

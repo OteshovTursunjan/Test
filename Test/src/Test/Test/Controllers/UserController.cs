@@ -50,7 +50,14 @@ namespace Test.Controllers
             var res = await mediator.Send(new ResetPassowrdCommand(resetPasswordDTO));
             return res == null ? NotFound() : Ok(res);
         }
-
+        [HttpDelete("DeleteUser")]
+        public async Task<IActionResult> DeleteUser(String Email)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var res = await mediator.Send(new DeleteUserCommand(Email));
+            return res == null ? NotFound() : Ok(res);
+        }
 
     }
 }
