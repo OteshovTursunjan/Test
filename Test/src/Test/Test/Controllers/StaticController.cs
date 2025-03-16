@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Test.Application.Feature.Statics.Queries;
 
 namespace Test.Controllers;
-
+   [Authorize(Roles = "User")]
 public class StaticController : Controller
 {
     private readonly IMediator _mediator;

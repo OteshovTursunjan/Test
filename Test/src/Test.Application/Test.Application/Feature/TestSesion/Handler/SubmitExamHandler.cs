@@ -20,9 +20,11 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
     private readonly IExamRepository _examRepository;
     private readonly IStaticRepository _staticRepository;
     private readonly IExamSessionRepository _examSessionRepository;
+    private readonly IFailRepository _failRepository;
     public SubmitExamHandler(DatabaseContext context,  IStudentResultRepository studentResultRepository,
        IExamRepository examRepository, IStudentAttemptRepository studentAttemptRepository,
-       IClaimService claimService,IStaticRepository staticRepository, IExamSessionRepository examSessionRepository )
+       IClaimService claimService,IStaticRepository staticRepository, IFailRepository failRepository,
+       IExamSessionRepository examSessionRepository )
     {
         this.context = context;
         _claimService = claimService;
@@ -31,6 +33,7 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
         _examRepository = examRepository;
         _staticRepository = staticRepository;
         _examSessionRepository = examSessionRepository;
+        _failRepository = failRepository;
     }
 
     public async Task<ExamResultModel> Handle(SubmitExamCommand request, CancellationToken cancellationToken)
@@ -74,6 +77,12 @@ public class SubmitExamHandler : IRequestHandler<SubmitExamCommand, ExamResultMo
         else
         {
             IsFail = true;
+            var fails = new Tests.Core.Enteties.Fail()
+            {
+                StudentID = examsession.StudentId,
+                SubjectId = exam.SubjectId
+            };
+            await _failRepository.AddAsync(fails);
         }
 
         var studentResult = new Tests.Core.Enteties.StudentResult()
